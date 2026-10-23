@@ -1,17 +1,17 @@
 package com.alumni;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 /**
- * First runnable milestone for the Alumni Engagement and Networking System.
- * This prototype currently stores profiles in memory; persistence is planned
- * for a later phase.
+ * Console entry point for the Alumni Engagement and Networking System.
+ * Phase 1 scope: Java fundamentals and core OOP/inheritance concepts.
  */
-public class Main {
+public final class Main {
     private static final Scanner INPUT = new Scanner(System.in);
-    private static final List<AlumniProfile> PROFILES = new ArrayList<>();
+    private static final ProfileDirectory DIRECTORY = new ProfileDirectory();
+
+    private Main() { }
 
     public static void main(String[] args) {
         boolean running = true;
@@ -22,16 +22,20 @@ public class Main {
         while (running) {
             printMenu();
             int choice = readInt("Choose an option: ");
-
-            switch (choice) {
-                case 1 -> addProfile();
-                case 2 -> listProfiles();
-                case 3 -> searchProfiles();
-                case 0 -> {
-                    running = false;
-                    System.out.println("Thank you for using the system.");
+            try {
+                switch (choice) {
+                    case 1 -> addAlumni();
+                    case 2 -> addStudent();
+                    case 3 -> showAllProfiles();
+                    case 4 -> searchProfiles();
+                    case 0 -> {
+                        running = false;
+                        System.out.println("Thank you for using the system.");
+                    }
+                    default -> System.out.println("Invalid option. Please choose 0–4.");
                 }
-                default -> System.out.println("Invalid option. Please choose 0, 1, 2, or 3.");
+            } catch (IllegalArgumentException exception) {
+                System.out.println("Could not save profile: " + exception.getMessage());
             }
         }
         INPUT.close();
@@ -39,53 +43,57 @@ public class Main {
 
     private static void printMenu() {
         System.out.println("\n--- Main Menu ---");
-        System.out.println("1. Add alumni/student profile");
-        System.out.println("2. View all profiles");
-        System.out.println("3. Search profiles by name");
+        System.out.println("1. Register alumni profile");
+        System.out.println("2. Register student profile");
+        System.out.println("3. View all profiles (sorted by name)");
+        System.out.println("4. Search profiles by name");
         System.out.println("0. Exit");
     }
 
-    private static void addProfile() {
-        System.out.println("\n--- Add Profile ---");
+    private static void addAlumni() {
+        System.out.println("\n--- Alumni Registration ---");
         String name = readNonBlank("Full name: ");
-        String role = readNonBlank("Role (Alumni/Student): ");
-        String graduationYear = readNonBlank("Graduation year (or expected year): ");
-        String expertise = readNonBlank("Area of expertise / study: ");
+        String year = readNonBlank("Graduation year: ");
+        String expertise = readNonBlank("Area of expertise: ");
         String email = readNonBlank("Contact email: ");
+        String organization = readNonBlank("Current organization: ");
 
-        PROFILES.add(new AlumniProfile(name, role, graduationYear, expertise, email));
-        System.out.println("Profile added successfully. Total profiles: " + PROFILES.size());
+        DIRECTORY.add(new Alumni(name, year, expertise, email, organization));
+        System.out.println("Alumni profile registered. Total profiles: " + DIRECTORY.size());
     }
 
-    private static void listProfiles() {
-        System.out.println("\n--- Profiles ---");
-        if (PROFILES.isEmpty()) {
+    private static void addStudent() {
+        System.out.println("\n--- Student Registration ---");
+        String name = readNonBlank("Full name: ");
+        String expectedYear = readNonBlank("Expected graduation year: ");
+        String area = readNonBlank("Area of study: ");
+        String email = readNonBlank("Contact email: ");
+        String semester = readNonBlank("Current semester: ");
+
+        DIRECTORY.add(new Student(name, expectedYear, area, email, semester));
+        System.out.println("Student profile registered. Total profiles: " + DIRECTORY.size());
+    }
+
+    private static void showAllProfiles() {
+        System.out.println("\n--- Profile Directory ---");
+        List<User> profiles = DIRECTORY.getAllSortedByName();
+        if (profiles.isEmpty()) {
             System.out.println("No profiles have been added yet.");
             return;
         }
-
-        for (int i = 0; i < PROFILES.size(); i++) {
-            System.out.println((i + 1) + ". " + PROFILES.get(i));
-        }
+        profiles.forEach(profile -> System.out.println("- " + profile.getSummary()));
+        System.out.println("Total profiles: " + profiles.size());
     }
 
     private static void searchProfiles() {
-        System.out.println("\n--- Search Profiles ---");
-        String query = readNonBlank("Enter a name or part of a name: ").toLowerCase();
-        int matches = 0;
-
-        for (AlumniProfile profile : PROFILES) {
-            if (profile.getName().toLowerCase().contains(query)) {
-                System.out.println(profile);
-                matches++;
-            }
-        }
-
-        if (matches == 0) {
+        String query = readNonBlank("\nEnter a name or part of a name: ");
+        List<User> matches = DIRECTORY.searchByName(query);
+        if (matches.isEmpty()) {
             System.out.println("No matching profiles found.");
-        } else {
-            System.out.println("Matches found: " + matches);
+            return;
         }
+        matches.forEach(profile -> System.out.println("- " + profile.getSummary()));
+        System.out.println("Matches found: " + matches.size());
     }
 
     private static String readNonBlank(String prompt) {
@@ -108,33 +116,6 @@ public class Main {
             } catch (NumberFormatException exception) {
                 System.out.println("Please enter a valid whole number.");
             }
-        }
-    }
-
-    private static final class AlumniProfile {
-        private final String name;
-        private final String role;
-        private final String graduationYear;
-        private final String expertise;
-        private final String email;
-
-        private AlumniProfile(String name, String role, String graduationYear,
-                              String expertise, String email) {
-            this.name = name;
-            this.role = role;
-            this.graduationYear = graduationYear;
-            this.expertise = expertise;
-            this.email = email;
-        }
-
-        private String getName() {
-            return name;
-        }
-
-        @Override
-        public String toString() {
-            return name + " | " + role + " | Graduation: " + graduationYear
-                    + " | Expertise: " + expertise + " | Email: " + email;
         }
     }
 }
