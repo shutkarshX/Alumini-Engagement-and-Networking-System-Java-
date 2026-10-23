@@ -59,7 +59,7 @@ java -cp out com.alumni.Main
 The program creates the `data` directory and profile file when the first profile is saved. If no saved file exists, it starts with an empty directory.
 
 ## Verification status
-The Phase 2 persistence implementation has been committed to the repository. Compile/runtime tests must be run locally before treating it as verified or using it as report evidence. Concurrency, socket networking and GUI features are not claimed as implemented.
+The repository includes a GitHub Actions workflow (`.github/workflows/java-verification.yml`) that compiles the application and runs the dependency-free profile-storage smoke tests on pushes to `main` and pull requests. A committed workflow or test file is not itself proof of a passing run; check the Actions tab for the actual result. Concurrency, socket networking and GUI features are not claimed as implemented.
 
 ## Evidence integrity
 Reports must distinguish implemented, tested features from future plans. Screenshots must be captured from the real running application.
