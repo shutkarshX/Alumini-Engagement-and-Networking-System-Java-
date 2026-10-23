@@ -10,24 +10,27 @@ public final class Student extends User {
         this.currentSemester = requireSemester(currentSemester);
     }
 
+    /** Constructor for a profile migrated from the older ID-based file format. */
+    public Student(String name, String expectedGraduationYear, String areaOfStudy,
+                   String email, String currentSemester, String profileId, boolean legacyRecord) {
+        super(name, expectedGraduationYear, areaOfStudy, email, profileId, legacyRecord);
+        this.currentSemester = requireSemester(currentSemester);
+    }
+
     private static String requireSemester(String value) {
         if (value == null || value.trim().isEmpty()) {
             throw new IllegalArgumentException("Current semester cannot be empty.");
         }
         String semester = value.trim();
-        if (!semester.matches("(?i)(?:semester\\s*)?[1-8]")) {
+        if (!semester.matches("(?i)(?:semester\\s*)?[1-8]|Not provided")) {
             throw new IllegalArgumentException("Current semester must be from 1 to 8 (for example, 3 or Semester 3).");
         }
         return semester;
     }
 
     public String getCurrentSemester() { return currentSemester; }
-
-    @Override
-    public String getRole() { return "Student"; }
-
-    @Override
-    public String getSummary() {
+    @Override public String getRole() { return "Student"; }
+    @Override public String getSummary() {
         return super.getSummary() + " | Current semester: " + currentSemester;
     }
 }

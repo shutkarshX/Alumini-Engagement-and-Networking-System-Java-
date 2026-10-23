@@ -9,13 +9,23 @@ public abstract class User {
     private final String graduationYear;
     private final String areaOfStudyOrExpertise;
     private final String email;
+    private final String profileId;
 
     protected User(String name, String graduationYear,
                    String areaOfStudyOrExpertise, String email) {
+        this(name, graduationYear, areaOfStudyOrExpertise, email, null, false);
+    }
+
+    /** Constructor for records migrated from the older ID-based storage format. */
+    protected User(String name, String graduationYear, String areaOfStudyOrExpertise,
+                   String email, String profileId, boolean legacyRecord) {
         this.name = requireText(name, "Name");
-        this.graduationYear = requireYear(graduationYear);
-        this.areaOfStudyOrExpertise = requireText(areaOfStudyOrExpertise, "Area of study/expertise");
+        this.graduationYear = legacyRecord && "Not provided".equals(graduationYear)
+                ? "Not provided" : requireYear(graduationYear);
+        this.areaOfStudyOrExpertise = legacyRecord && "Not provided".equals(areaOfStudyOrExpertise)
+                ? "Not provided" : requireText(areaOfStudyOrExpertise, "Area of study/expertise");
         this.email = requireEmail(email);
+        this.profileId = profileId == null || profileId.isBlank() ? null : profileId.trim();
     }
 
     private static String requireText(String value, String field) {
@@ -49,12 +59,13 @@ public abstract class User {
     public String getGraduationYear() { return graduationYear; }
     public String getAreaOfStudyOrExpertise() { return areaOfStudyOrExpertise; }
     public String getEmail() { return email; }
+    public String getProfileId() { return profileId; }
 
-    /** Subclasses provide their own profile label and details. */
     public abstract String getRole();
 
     public String getSummary() {
-        return String.format("%s | %s | Year: %s | Area: %s | Email: %s",
-                name, getRole(), graduationYear, areaOfStudyOrExpertise, email);
+        String id = profileId == null ? "" : " | ID: " + profileId;
+        return String.format("%s | %s%s | Year: %s | Area: %s | Email: %s",
+                name, getRole(), id, graduationYear, areaOfStudyOrExpertise, email);
     }
 }

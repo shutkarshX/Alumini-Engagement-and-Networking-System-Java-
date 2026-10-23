@@ -67,32 +67,57 @@ public final class ProfileStorage {
     }
 
     private String encode(User profile) {
+        String type;
+        String detail;
         if (profile instanceof Alumni alumni) {
-            return String.join(",", "A", field(alumni.getName()), field(alumni.getGraduationYear()),
-                    field(alumni.getAreaOfStudyOrExpertise()), field(alumni.getEmail()),
-                    field(alumni.getCurrentOrganization()));
+            type = "A";
+            detail = alumni.getCurrentOrganization();
+        } else if (profile instanceof Student student) {
+            type = "S";
+            detail = student.getCurrentSemester();
+        } else {
+            throw new IllegalArgumentException("Unsupported profile type: " + profile.getClass().getName());
         }
-        if (profile instanceof Student student) {
-            return String.join(",", "S", field(student.getName()), field(student.getGraduationYear()),
-                    field(student.getAreaOfStudyOrExpertise()), field(student.getEmail()),
-                    field(student.getCurrentSemester()));
-        }
-        throw new IllegalArgumentException("Unsupported profile type: " + profile.getClass().getName());
+        return String.join(",", "V2", type, field(profile.getName()), field(profile.getGraduationYear()),
+                field(profile.getAreaOfStudyOrExpertise()), field(profile.getEmail()), field(detail),
+                field(profile.getProfileId() == null ? "" : profile.getProfileId()));
     }
 
     private User decode(String line) {
         String[] parts = line.split(",", -1);
-        if (parts.length != 6) throw new IllegalArgumentException("Expected six fields.");
-        String name = value(parts[1]);
-        String year = value(parts[2]);
-        String area = value(parts[3]);
-        String email = value(parts[4]);
-        String detail = value(parts[5]);
-        return switch (parts[0]) {
-            case "A" -> new Alumni(name, year, area, email, detail);
-            case "S" -> new Student(name, year, area, email, detail);
-            default -> throw new IllegalArgumentException("Unknown profile type.");
-        };
+        if (parts.length == 8 && "V2".equals(parts[0])) {
+            String type = parts[1], name = value(parts[2]), year = value(parts[3]);
+            String area = value(parts[4]), email = value(parts[5]), detail = value(parts[6]), id = value(parts[7]);
+            boolean legacy = "Not provided".equals(year) || "Not provided".equals(area);
+            return switch (type) {
+                case "A" -> new Alumni(name, year, area, email, detail, id, legacy);
+                case "S" -> new Student(name, year, area, email, detail, id, legacy);
+                default -> throw new IllegalArgumentException("Unknown profile type.");
+            };
+        }
+        if (parts.length != 6) throw new IllegalArgumentException("Expected six fields or eight V2 fields.");
+        String type = parts[0], name = value(parts[1]), second = value(parts[2]);
+        String third = value(parts[3]), fourth = value(parts[4]), fifth = value(parts[5]);
+        if (isYear(second)) {
+            return switch (type) {
+                case "A" -> new Alumni(name, second, third, fourth, fifth);
+                case "S" -> new Student(name, second, third, fourth, fifth);
+                default -> throw new IllegalArgumentException("Unknown profile type.");
+            };
+        }
+        if (("A".equals(type) && second.startsWith("ALU")) || ("S".equals(type) && second.startsWith("STU"))) {
+            String year = "Not provided";
+            if ("A".equals(type)) {
+                String area = third.equals(fourth) ? "Not provided" : fourth;
+                return new Alumni(name, year, area, third, fifth, second, true);
+            }
+            return new Student(name, year, fourth, third, fifth, second, true);
+        }
+        throw new IllegalArgumentException("Unrecognized profile record format.");
+    }
+
+    private boolean isYear(String value) {
+        return value.matches("\\d{4}") && Integer.parseInt(value) >= 1900 && Integer.parseInt(value) <= 2100;
     }
 
     private String field(String value) {

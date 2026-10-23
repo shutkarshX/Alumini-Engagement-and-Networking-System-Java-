@@ -15,6 +15,7 @@ public final class ProfileStorageSmokeTest {
         try {
             testMissingFileLoadsEmptyList(temporaryDirectory);
             testAlumniAndStudentRoundTrip(temporaryDirectory);
+            testLegacyIdRecordsLoadAndRoundTrip(temporaryDirectory);
             testMalformedRecordFailsClearly(temporaryDirectory);
             System.out.println("PASS: all ProfileStorage smoke tests");
         } finally {
@@ -59,6 +60,38 @@ public final class ProfileStorageSmokeTest {
         check(restoredStudent.getCurrentSemester().equals("Semester 3"),
                 "Student-specific field was not preserved.");
         System.out.println("PASS: alumni/student round-trip, punctuation and Unicode");
+    }
+
+
+    private static void testLegacyIdRecordsLoadAndRoundTrip(Path directory) throws IOException {
+        Path file = directory.resolve("legacy.csv");
+        String alumni = String.join(",", "A", enc("Test Alumni"), enc("ALU2026001"),
+                enc("alumni.test@example.com"), enc("alumni.test@example.com"), enc("Example Technologies"));
+        String student = String.join(",", "S", enc("Test Student"), enc("STU2026001"),
+                enc("student.test@example.com"), enc("Computer Science"), enc("2"));
+        Files.writeString(file, alumni + System.lineSeparator() + student + System.lineSeparator(),
+                StandardCharsets.UTF_8);
+        ProfileStorage storage = new ProfileStorage(file);
+        List<User> loaded = storage.load();
+        check(loaded.size() == 2, "Both legacy profiles should load.");
+        Alumni a = (Alumni) loaded.get(0);
+        check("ALU2026001".equals(a.getProfileId()), "Alumni ID must be preserved.");
+        check("Not provided".equals(a.getGraduationYear()), "Missing year should be explicit.");
+        check("Not provided".equals(a.getAreaOfStudyOrExpertise()), "Duplicated email must not be treated as expertise.");
+        Student s = (Student) loaded.get(1);
+        check("STU2026001".equals(s.getProfileId()), "Student ID must be preserved.");
+        check("Computer Science".equals(s.getAreaOfStudyOrExpertise()), "Student area should be preserved.");
+        check("2".equals(s.getCurrentSemester()), "Student semester should be preserved.");
+        storage.save(loaded);
+        List<User> roundTrip = storage.load();
+        check(roundTrip.size() == 2, "Legacy profiles must survive save/reload.");
+        check("ALU2026001".equals(roundTrip.get(0).getProfileId()), "Alumni ID lost on round-trip.");
+        check("STU2026001".equals(roundTrip.get(1).getProfileId()), "Student ID lost on round-trip.");
+        System.out.println("PASS: legacy ID records load and round-trip");
+    }
+
+    private static String enc(String value) {
+        return java.util.Base64.getEncoder().encodeToString(value.getBytes(StandardCharsets.UTF_8));
     }
 
     private static void testMalformedRecordFailsClearly(Path directory) throws IOException {
