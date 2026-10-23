@@ -1,28 +1,44 @@
-# Phase 1 — Foundation and First Prototype
+# Phase 1 — Units 1 and 2: Foundation and OOP Prototype
 
 ## Objective
 
-Establish the repository and implement a small runnable Java prototype for the Alumni Engagement and Networking System.
+Build the first working version of the Alumni Engagement and Networking System while applying the Java and object-oriented concepts covered in Units 1 and 2 of CCSE0355.
 
-## Work completed
+## Unit 1 alignment — Java fundamentals and OOP
 
-- Initialized the repository README with the project overview and phase roadmap.
-- Added a console-based Java entry point.
-- Added in-memory profile creation, listing, and name search.
-- Added basic input handling for empty fields and invalid menu choices.
+The prototype includes a menu-driven console workflow, classes and objects, constructors, encapsulated fields, an abstract base class, and methods. The User class defines shared profile data and an abstract role method. The Main class handles console interaction.
 
-## Current implementation boundary
+## Unit 2 alignment — OOP features, arrays and lambda expressions
 
-Profiles are held in memory and are lost when the program exits. Email format validation, persistent storage, events, mentorship, authentication, and automated tests are not implemented yet. These must not be described as completed in reports.
+The Alumni and Student classes extend User and override role-specific behavior. The directory stores different profile subtypes through a shared User reference, demonstrating polymorphism. A Java collection stores profiles, and a lambda/method-reference comparator sorts them by name.
 
-## Verification status
+## Implemented features
 
-Source files have been committed to GitHub. Compilation and runtime tests still need to be run in a local Java environment before this prototype can be marked verified.
+- Register an alumni profile with name, graduation year, expertise, email, and organization.
+- Register a student profile with name, expected graduation year, area of study, email, and semester.
+- List profiles in case-insensitive alphabetical order.
+- Search profiles by partial name.
+- Reject empty required fields.
+- Display a message when no profiles or search matches exist.
+
+## Current limitations
+
+- Data is stored in memory and is lost when the program exits.
+- There is no graphical interface, persistent database/file storage, authentication, event management, mentorship request workflow, or socket communication yet.
+- Email format validation and automated test coverage have not yet been added.
+- Source files have been committed, but local compilation/runtime verification remains outstanding.
+
+## Build command
+
+Requires JDK 17 or later:
+
+    javac -d out src/main/java/com/alumni/*.java
+    java -cp out com.alumni.Main
 
 ## Next steps
 
-1. Confirm the approved topic form and adjust the feature scope if necessary.
-2. Compile and run the prototype locally.
-3. Add unit tests and stronger validation.
-4. Separate profile logic into its own class and introduce persistence.
-5. Capture genuine execution screenshots for report evidence.
+1. Compile and run the project locally.
+2. Test alumni registration, student registration, sorted listing, search, and invalid input.
+3. Capture genuine screenshots of the running application.
+4. Add automated tests and strengthen input validation.
+5. Plan Units 3 and 4 for Phase 2, then Unit 5 and integration for the final phase.
