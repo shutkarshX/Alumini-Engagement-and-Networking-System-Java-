@@ -7,10 +7,22 @@ public final class Student extends User {
     public Student(String name, String expectedGraduationYear, String areaOfStudy,
                    String email, String currentSemester) {
         super(name, expectedGraduationYear, areaOfStudy, email);
-        if (currentSemester == null || currentSemester.trim().isEmpty()) {
+        this.currentSemester = requireSemester(currentSemester);
+    }
+
+    private static String requireSemester(String value) {
+        if (value == null || value.trim().isEmpty()) {
             throw new IllegalArgumentException("Current semester cannot be empty.");
         }
-        this.currentSemester = currentSemester.trim();
+        String semester = value.trim();
+        if (!semester.matches("\\d{1,2}")) {
+            throw new IllegalArgumentException("Current semester must be a number from 1 to 8.");
+        }
+        int number = Integer.parseInt(semester);
+        if (number < 1 || number > 8) {
+            throw new IllegalArgumentException("Current semester must be between 1 and 8.");
+        }
+        return semester;
     }
 
     public String getCurrentSemester() { return currentSemester; }
