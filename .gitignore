@@ -1,0 +1,11 @@
+# Java build output
+out/
+*.class
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+
+# Local user data (do not commit real profile details)
+data/profiles.csv
