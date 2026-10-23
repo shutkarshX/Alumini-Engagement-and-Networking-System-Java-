@@ -1,50 +1,62 @@
-# Phase 1 — Modules 1 and 2: Java and OOP Foundation
+# Phase 1 — Modules 1 and 2: Java Fundamentals and OOP
 
 ## Objective
 
-Develop the first increment of the Alumni Engagement and Networking System using Java fundamentals and core object-oriented techniques from CCSE0355.
+Build a small, working first increment of the Alumni Engagement and Networking System using the Java and object-oriented concepts taught in Modules 1 and 2 of CCSE0355.
 
-## Concepts represented in the code
+## Scope of the first increment
 
-- **Classes and objects:** `User`, `Alumni`, `Student` and the application entry point.
-- **Encapsulation:** profile fields are private and exposed through getters.
-- **Abstraction:** `User` is abstract and defines the common profile contract.
-- **Inheritance and overriding:** `Alumni` and `Student` specialize `User`.
-- **Polymorphism:** both profile types are represented as `User` values in a shared directory/table.
-- **Collections and lambda/method references:** profiles are sorted by name and rendered from a collection.
-- **Input validation:** required values and a basic email format are checked before constructing a profile.
+The console prototype includes:
+- Register an alumni profile with name, graduation year, expertise, email and current organization.
+- Register a student profile with name, expected graduation year, area of study, email and current semester.
+- List profiles in case-insensitive alphabetical order.
+- Search profiles by partial name.
+- Reject blank required fields and handle invalid menu input.
 
-## Current runnable application direction
+## Syllabus concepts represented
 
-The project now targets a Java Swing desktop application. The UI supports registering, viewing, searching, editing and deleting alumni/student profiles. A file repository stores profiles locally and reloads them on launch.
+- **Classes and objects:** separate classes model users, alumni and students.
+- **Constructors:** initialize profile objects with their required data.
+- **Encapsulation:** profile data is stored in private fields and exposed through getters.
+- **Abstraction:** the shared `User` class is abstract.
+- **Inheritance:** `Alumni` and `Student` extend `User`.
+- **Method overriding and polymorphism:** role-specific methods are overridden and both types can be handled as `User` objects.
+- **Collections and lambda/method references:** a shared collection stores profiles and supports sorted listing/search.
 
-The GUI and persistence are being introduced early as the agreed product target; this does not change the reporting map: Report 1 documents Modules 1–2, Report 2 documents Modules 3–4, and the Final Report documents Module 5 and integrated verification. The report should describe only the features and syllabus concepts actually demonstrated at submission time.
+The final syllabus-to-code mapping should be checked against the concepts actually demonstrated in the final Phase 1 version. A topic appearing in the syllabus is not by itself evidence that it has been implemented.
 
-## Local build
+## Explicitly deferred
+
+These are not required to call Phase 1 complete:
+- Desktop GUI implementation.
+- Persistent local-file storage.
+- Edit/delete profile workflows.
+- Authentication or multi-user accounts.
+- Events, mentorship, chat or socket networking.
+- Database integration.
+
+The final product is still intended to be a desktop GUI, and local files remain the selected storage direction. Those features will be introduced when they fit the relevant later modules and project requirements.
+
+## Build and run
 
 Requires JDK 17 or later:
 
 ```bash
-javac -d out $(find src/main/java -name "*.java")
+javac -d out src/main/java/com/alumni/*.java
 java -cp out com.alumni.Main
 ```
 
-Windows PowerShell:
+## Verification checklist
 
-```powershell
-$files = Get-ChildItem -Recurse src/main/java -Filter *.java | ForEach-Object { $_.FullName }
-javac -d out $files
-java -cp out com.alumni.Main
-```
+- [ ] Compile successfully on JDK 17+.
+- [ ] Register one alumni profile.
+- [ ] Register one student profile.
+- [ ] List both profiles and verify alphabetical ordering.
+- [ ] Search by full and partial name.
+- [ ] Try blank fields and invalid menu input.
+- [ ] Capture genuine screenshots of the running prototype.
+- [ ] Record only the checks actually completed.
 
-## Verification status
+## Exit criteria
 
-Compilation, manual workflow checks and automated tests still need to be run locally. No test result or screenshot should be claimed until captured from an actual run.
-
-## Next development checkpoints
-
-1. Compile and manually verify profile CRUD, search, validation, and file persistence.
-2. Add focused automated tests for the model, repository and service behaviour.
-3. Expand Module 3 handling for malformed records and meaningful exception messages.
-4. Evaluate Module 4 I/O/concurrency/socket concepts only where they serve a real requirement.
-5. Complete the GUI, generics/collections coverage, integration and evidence for the final phase.
+Phase 1 is complete when the scoped prototype compiles, the core flows above are demonstrated, genuine evidence is captured, and Report 1 describes the work accurately. Phase 2 then extends this codebase with Modules 3 and 4.
