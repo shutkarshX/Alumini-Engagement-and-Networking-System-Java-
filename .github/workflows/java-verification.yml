@@ -1,0 +1,28 @@
+name: Java verification
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compile-and-smoke-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Compile application and smoke tests
+        run: |
+          mkdir -p out
+          javac -d out src/main/java/com/alumni/*.java src/test/java/com/alumni/*.java
+      - name: Run storage smoke tests
+        run: java -ea -cp out com.alumni.ProfileStorageSmokeTest
