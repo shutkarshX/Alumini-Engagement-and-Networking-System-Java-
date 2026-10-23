@@ -11,7 +11,7 @@ The console prototype includes:
 - Register a student profile with name, expected graduation year, area of study, email and current semester.
 - List profiles in case-insensitive alphabetical order.
 - Search profiles by partial name.
-- Reject blank required fields and handle invalid menu input.
+- Reject blank required inputs and handle invalid menu input.
 
 ## Syllabus concepts represented
 
@@ -46,17 +46,26 @@ javac -d out src/main/java/com/alumni/*.java
 java -cp out com.alumni.Main
 ```
 
-## Verification checklist
+## Manual verification record
 
-- [ ] Compile successfully on JDK 17+.
-- [ ] Register one alumni profile.
-- [ ] Register one student profile.
-- [ ] List both profiles and verify alphabetical ordering.
-- [ ] Search by full and partial name.
-- [ ] Try blank fields and invalid menu input.
-- [ ] Capture genuine screenshots of the running prototype.
-- [ ] Record only the checks actually completed.
+The following checks were run manually in the console during Phase 1 development. These are manual checks, not automated unit tests.
+
+| Check | Observed result | Status |
+|---|---|---|
+| Compile Java source files | Compilation completed without errors | Passed |
+| Launch console application | Main menu appeared | Passed |
+| Register alumni profile | Aditi Sharma profile was registered | Passed |
+| Register student profile | Rahul Verma profile was registered | Passed |
+| List profiles | Both profiles appeared; Aditi Sharma was listed before Rahul Verma | Passed |
+| Search by partial name | Searching for `Aditi` returned Aditi Sharma | Passed |
+| Invalid menu input | Text entered at the numeric menu prompt produced a whole-number warning and invalid-option message; app returned to the menu | Passed |
+| Empty search query | Blank query produced `This field cannot be empty.` and prompted again | Passed |
+| Search with no matching result | Searching for `abcd` produced `No matching profiles found.` and returned to the menu | Passed |
+| Blank required field during profile registration | Not yet confirmed in the recorded run | Pending |
+| Capture genuine screenshots | Not yet recorded in this document | Pending |
+
+The sample profiles and email addresses used in the console test were demonstration data. No claim is made here that the app has persistent storage; profile data is held in the running prototype.
 
 ## Exit criteria
 
-Phase 1 is complete when the scoped prototype compiles, the core flows above are demonstrated, genuine evidence is captured, and Report 1 describes the work accurately. Phase 2 then extends this codebase with Modules 3 and 4.
+Before marking Phase 1 fully complete for reporting, verify blank-field validation during profile registration and capture genuine screenshots of the running prototype. Once those are done, Report 1 can describe the demonstrated implementation accurately. Phase 2 then extends this codebase with Modules 3 and 4.
