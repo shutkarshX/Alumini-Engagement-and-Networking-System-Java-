@@ -1,40 +1,58 @@
 # Alumni Engagement and Networking System (Java)
 
-A Java-based Object-Oriented Techniques (OOTS) project for connecting alumni and students through profiles, networking, mentorship, events, and career opportunities.
+A Java-based Object-Oriented Techniques (OOTS) project for managing alumni/student profiles and supporting future networking activities.
 
-## Current status
+## Course and project context
 
-**Phase 1 — Foundation:** in progress. The repository is being initialized from an empty state. Features will be marked complete only after implementation and testing.
+- Course: Object Oriented Techniques using Java
+- Course code: CCSE0355
+- Topic: Alumni Engagement and Networking System
+- Domain: Intelligent Java-Based Educational Management System
 
-## Initial scope
+## Phase and module mapping
 
-- Create and view alumni/student profiles.
-- Browse and register interest in alumni networking events.
-- Share mentorship and career opportunities.
-- Search profiles by name, graduation year, or area of expertise.
-- Demonstrate OOP concepts: classes and objects, encapsulation, inheritance where useful, polymorphism, collections, exception handling, and file I/O in later milestones.
+The project is developed as one continuous application across five syllabus units/modules:
 
-## Technology
+- **Phase 1 — Report 1:** Unit/Module 1 (Java fundamentals, OOP, classes/objects, abstraction, UML modelling) and Unit/Module 2 (inheritance, access modifiers, polymorphism, arrays, lambda expressions).
+- **Phase 2 — Report 2:** Unit/Module 3 (packages, exception handling, assertions/localization, string handling) and Unit/Module 4 (concurrency, I/O streams, TCP/UDP socket programming).
+- **Final phase — Final Report:** Unit/Module 5 (GUI, generics, collections) plus integration, validation, testing, and consolidated documentation for Units 1–5.
 
-- Java (JDK 17+ recommended)
-- Console interface for the first working milestone
-- Java collections for the initial prototype; persistence will be added as a separate milestone
+The syllabus unit topics guide the implementation; features will be added only when they fit the project and can be demonstrated.
 
-## Build and run
+## Current implementation
 
-The project is being developed incrementally. Build/run instructions will be added alongside the first runnable source files.
+Phase 1 prototype currently supports:
+- Registering alumni profiles.
+- Registering student profiles.
+- Listing profiles sorted by name.
+- Searching profiles by name.
+- Shared abstract User model with Alumni and Student subclasses.
+- In-memory profile directory using a Java collection and a lambda-based sorting comparator.
 
-## Phase log
+Profiles are held in memory and disappear when the program exits. Persistent storage, GUI, authentication, events, mentorship requests, and networking are not yet implemented.
 
-- [x] Repository baseline created
-- [ ] Confirm final feature scope against the approved OOTS topic form
-- [ ] First runnable Java prototype
-- [ ] Profile management
-- [ ] Events and networking
-- [ ] Mentorship and career opportunities
-- [ ] Persistence and validation
-- [ ] Tests, screenshots, and Report 2 evidence
+## Project structure
+
+    src/main/java/com/alumni/
+    ├── Main.java
+    ├── User.java
+    ├── Alumni.java
+    ├── Student.java
+    └── ProfileDirectory.java
+    docs/
+    └── PHASE_1.md
+
+## Compile and run
+
+Requires JDK 17 or later. From the repository root:
+
+    javac -d out src/main/java/com/alumni/*.java
+    java -cp out com.alumni.Main
+
+## Verification status
+
+The source has been committed to GitHub. Compile/runtime verification and repeatable automated tests still need to be run in a local Java environment. Do not treat the prototype as verified until those checks pass.
 
 ## Project integrity
 
-This README describes planned scope, not a claim that all listed features are already implemented. The phase checklist will be updated as working code is added and verified.
+The phase checklist and report statements must distinguish implemented features from planned features. Screenshots and test outcomes will be captured from the real running application.
