@@ -1,39 +1,40 @@
 # Alumni Engagement and Networking System (Java)
 
-A Java desktop application for the Object-Oriented Techniques using Java (OOTS) course. The project is being built incrementally, with each phase tied to two of the five syllabus modules.
+A Java project for Object-Oriented Techniques using Java (OOTS), developed incrementally according to the five-module phase plan.
 
-## Course and project context
+## Project context
 
 - **Course:** Object Oriented Techniques using Java
 - **Course code:** CCSE0355
 - **Approved topic:** Alumni Engagement and Networking System
 - **Domain:** Intelligent Java-Based Educational Management System
-- **Application target:** Desktop GUI using Java Swing
-- **Initial storage:** Local UTF-8 file at `data/profiles.csv`
+- **Final application target:** Desktop GUI
+- **Initial development stage:** Console prototype focused on Modules 1 and 2
 
-## Five-module phase mapping
+## Development phases and module mapping
 
-| Delivery stage | Syllabus modules | Report |
+| Stage | Modules | Goal |
 |---|---|---|
-| Phase 1 | Module 1: Java fundamentals, classes/objects, abstraction and UML; Module 2: inheritance, access control, polymorphism and lambda expressions | Report 1 |
-| Phase 2 | Module 3: packages, exceptions and string handling; Module 4: concurrency, I/O streams and socket concepts | Report 2 |
-| Final phase | Module 5: GUI, generics and collections, plus integration and verification across Modules 1–5 | Final Report |
+| Phase 1 — Report 1 | Modules 1 and 2 | Java fundamentals, classes/objects, encapsulation, abstraction, inheritance, polymorphism and relevant Unit 2 concepts |
+| Phase 2 — Report 2 | Modules 3 and 4 | Packages, exception handling, string handling, I/O streams, concurrency and relevant socket concepts |
+| Final phase — Final Report | Module 5 and integration | GUI, generics, collections, integrated testing and final evidence |
 
-The current desktop shell is an early working target, not a claim that all Module 5 learning outcomes are complete. Phase reports must describe the real work and concepts demonstrated at that checkpoint.
+Each phase extends the previous working version. The project will not be completed in advance and then retrospectively divided into phases.
 
-## Current implementation
+## Phase 1 scope
 
-- Register alumni and student profiles.
-- View profiles in a sortable table.
-- Search profiles by partial name.
-- Edit and delete selected profiles.
-- Validate required fields and basic email format.
-- Save and reload profiles from a local file.
-- Separate the storage contract from its file-based implementation so a database or another repository can be added later.
+The Phase 1 console prototype is intended to support:
+- Registering alumni profiles.
+- Registering student profiles.
+- Listing profiles sorted by name.
+- Searching profiles by partial name.
+- Required-field validation.
+- Demonstrating classes, constructors, encapsulation, abstraction, inheritance, method overriding and polymorphism.
+- Using a collection and a lambda/method-reference comparator where appropriate to the syllabus.
 
-The app is a local prototype: it has no authentication, cloud sync, multi-user access, or server-side security. The local file is not encrypted; avoid putting sensitive personal information into demo data.
+The profile directory is currently in memory; profiles are lost when the program exits. This is intentional for the current checkpoint. GUI, persistent local-file storage, edit/delete workflows, authentication, events and mentorship are not Phase 1 completion claims.
 
-## Project structure
+## Source structure
 
 ```text
 src/main/java/com/alumni/
@@ -41,28 +42,21 @@ src/main/java/com/alumni/
 ├── User.java
 ├── Alumni.java
 ├── Student.java
-├── ProfileDirectory.java
-├── repository/
-│   ├── ProfileRepository.java
-│   └── FileProfileRepository.java
-└── ui/
-    └── AlumniNetworkFrame.java
-data/
-└── profiles.csv   (created automatically when the first change is saved)
+└── ProfileDirectory.java
 docs/
 └── PHASE_1.md
 ```
 
-## Build and run
+## Compile and run
 
-Requires **JDK 17 or later**. From the repository root:
+Requires JDK 17 or later. From the repository root:
 
 ```bash
-javac -d out $(find src/main/java -name "*.java")
+javac -d out src/main/java/com/alumni/*.java
 java -cp out com.alumni.Main
 ```
 
-On Windows PowerShell, use:
+Windows PowerShell:
 
 ```powershell
 $files = Get-ChildItem -Recurse src/main/java -Filter *.java | ForEach-Object { $_.FullName }
@@ -72,8 +66,8 @@ java -cp out com.alumni.Main
 
 ## Verification status
 
-The implementation has been committed to GitHub, but it still needs compilation and runtime checks in a local Java 17+ environment. Do not report tests or screenshots as completed until they have actually been produced.
+The source has been committed to GitHub. Compile/runtime verification and repeatable tests must be run before recording test outcomes or using screenshots as evidence.
 
-## Integrity rule
+## Evidence integrity
 
-Reports and screenshots must reflect the real code and observed behaviour. Features that are only planned must be labelled as planned.
+Reports must distinguish implemented, tested features from future plans. Screenshots must be captured from the real running application.
