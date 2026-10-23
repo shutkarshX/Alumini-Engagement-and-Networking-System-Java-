@@ -13,9 +13,9 @@ public abstract class User {
     protected User(String name, String graduationYear,
                    String areaOfStudyOrExpertise, String email) {
         this.name = requireText(name, "Name");
-        this.graduationYear = requireText(graduationYear, "Graduation year");
+        this.graduationYear = requireYear(graduationYear);
         this.areaOfStudyOrExpertise = requireText(areaOfStudyOrExpertise, "Area of study/expertise");
-        this.email = requireText(email, "Email");
+        this.email = requireEmail(email);
     }
 
     private static String requireText(String value, String field) {
@@ -23,6 +23,26 @@ public abstract class User {
             throw new IllegalArgumentException(field + " cannot be empty.");
         }
         return value.trim();
+    }
+
+    private static String requireYear(String value) {
+        String year = requireText(value, "Graduation year");
+        if (!year.matches("\\d{4}")) {
+            throw new IllegalArgumentException("Graduation year must contain exactly four digits.");
+        }
+        int numericYear = Integer.parseInt(year);
+        if (numericYear < 1900 || numericYear > 2100) {
+            throw new IllegalArgumentException("Graduation year must be between 1900 and 2100.");
+        }
+        return year;
+    }
+
+    private static String requireEmail(String value) {
+        String email = requireText(value, "Email");
+        if (!email.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")) {
+            throw new IllegalArgumentException("Enter a valid email address (for example, name@example.com).");
+        }
+        return email;
     }
 
     public String getName() { return name; }
