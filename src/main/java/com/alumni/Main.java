@@ -1,24 +1,33 @@
 package com.alumni;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Scanner;
 
-/**
- * Phase 1 console application for the Alumni Engagement and Networking System.
- * The first increment focuses on Java fundamentals and core OOP concepts.
- */
+/** Console application with persistent local profile storage. */
 public final class Main {
     private static final Scanner INPUT = new Scanner(System.in);
     private static final ProfileDirectory DIRECTORY = new ProfileDirectory();
+    private static final ProfileStorage STORAGE = new ProfileStorage(Path.of("data", "profiles.csv"));
 
     private Main() { }
 
     public static void main(String[] args) {
+        try {
+            List<User> savedProfiles = STORAGE.load();
+            savedProfiles.forEach(DIRECTORY::add);
+            System.out.println("Loaded " + savedProfiles.size() + " saved profile(s).");
+        } catch (IOException exception) {
+            System.err.println("Could not load saved profiles: " + exception.getMessage());
+            System.err.println("The application will stop to protect existing profile data.");
+            return;
+        }
+
         boolean running = true;
         System.out.println("==========================================");
         System.out.println(" Alumni Engagement and Networking System ");
         System.out.println("==========================================");
-
         while (running) {
             printMenu();
             int choice = readInt("Choose an option: ");
@@ -36,6 +45,9 @@ public final class Main {
                 }
             } catch (IllegalArgumentException exception) {
                 System.out.println("Could not register profile: " + exception.getMessage());
+            } catch (IOException exception) {
+                System.out.println("Profile could not be saved: " + exception.getMessage());
+                System.out.println("The new profile is still in memory for this session only.");
             }
         }
         INPUT.close();
@@ -50,28 +62,32 @@ public final class Main {
         System.out.println("0. Exit");
     }
 
-    private static void addAlumni() {
+    private static void addAlumni() throws IOException {
         System.out.println("\n--- Alumni Registration ---");
         String name = readNonBlank("Full name: ");
         String year = readNonBlank("Graduation year: ");
         String expertise = readNonBlank("Area of expertise: ");
         String email = readNonBlank("Contact email: ");
         String organization = readNonBlank("Current organization: ");
-
         DIRECTORY.add(new Alumni(name, year, expertise, email, organization));
-        System.out.println("Alumni profile registered. Total profiles: " + DIRECTORY.size());
+        saveProfiles();
+        System.out.println("Alumni profile registered and saved. Total profiles: " + DIRECTORY.size());
     }
 
-    private static void addStudent() {
+    private static void addStudent() throws IOException {
         System.out.println("\n--- Student Registration ---");
         String name = readNonBlank("Full name: ");
         String expectedYear = readNonBlank("Expected graduation year: ");
         String area = readNonBlank("Area of study: ");
         String email = readNonBlank("Contact email: ");
         String semester = readNonBlank("Current semester: ");
-
         DIRECTORY.add(new Student(name, expectedYear, area, email, semester));
-        System.out.println("Student profile registered. Total profiles: " + DIRECTORY.size());
+        saveProfiles();
+        System.out.println("Student profile registered and saved. Total profiles: " + DIRECTORY.size());
+    }
+
+    private static void saveProfiles() throws IOException {
+        STORAGE.save(DIRECTORY.getAllSortedByName());
     }
 
     private static void showAllProfiles() {
