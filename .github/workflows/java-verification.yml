@@ -26,3 +26,5 @@ jobs:
           javac -d out src/main/java/com/alumni/*.java src/test/java/com/alumni/*.java
       - name: Run storage smoke tests
         run: java -ea -cp out com.alumni.ProfileStorageSmokeTest
+      - name: Run TCP directory smoke tests
+        run: java -ea -cp out com.alumni.DirectoryServerSmokeTest
