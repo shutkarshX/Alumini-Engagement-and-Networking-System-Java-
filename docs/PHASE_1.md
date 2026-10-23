@@ -1,44 +1,50 @@
-# Phase 1 — Units 1 and 2: Foundation and OOP Prototype
+# Phase 1 — Modules 1 and 2: Java and OOP Foundation
 
 ## Objective
 
-Build the first working version of the Alumni Engagement and Networking System while applying the Java and object-oriented concepts covered in Units 1 and 2 of CCSE0355.
+Develop the first increment of the Alumni Engagement and Networking System using Java fundamentals and core object-oriented techniques from CCSE0355.
 
-## Unit 1 alignment — Java fundamentals and OOP
+## Concepts represented in the code
 
-The prototype includes a menu-driven console workflow, classes and objects, constructors, encapsulated fields, an abstract base class, and methods. The User class defines shared profile data and an abstract role method. The Main class handles console interaction.
+- **Classes and objects:** `User`, `Alumni`, `Student` and the application entry point.
+- **Encapsulation:** profile fields are private and exposed through getters.
+- **Abstraction:** `User` is abstract and defines the common profile contract.
+- **Inheritance and overriding:** `Alumni` and `Student` specialize `User`.
+- **Polymorphism:** both profile types are represented as `User` values in a shared directory/table.
+- **Collections and lambda/method references:** profiles are sorted by name and rendered from a collection.
+- **Input validation:** required values and a basic email format are checked before constructing a profile.
 
-## Unit 2 alignment — OOP features, arrays and lambda expressions
+## Current runnable application direction
 
-The Alumni and Student classes extend User and override role-specific behavior. The directory stores different profile subtypes through a shared User reference, demonstrating polymorphism. A Java collection stores profiles, and a lambda/method-reference comparator sorts them by name.
+The project now targets a Java Swing desktop application. The UI supports registering, viewing, searching, editing and deleting alumni/student profiles. A file repository stores profiles locally and reloads them on launch.
 
-## Implemented features
+The GUI and persistence are being introduced early as the agreed product target; this does not change the reporting map: Report 1 documents Modules 1–2, Report 2 documents Modules 3–4, and the Final Report documents Module 5 and integrated verification. The report should describe only the features and syllabus concepts actually demonstrated at submission time.
 
-- Register an alumni profile with name, graduation year, expertise, email, and organization.
-- Register a student profile with name, expected graduation year, area of study, email, and semester.
-- List profiles in case-insensitive alphabetical order.
-- Search profiles by partial name.
-- Reject empty required fields.
-- Display a message when no profiles or search matches exist.
-
-## Current limitations
-
-- Data is stored in memory and is lost when the program exits.
-- There is no graphical interface, persistent database/file storage, authentication, event management, mentorship request workflow, or socket communication yet.
-- Email format validation and automated test coverage have not yet been added.
-- Source files have been committed, but local compilation/runtime verification remains outstanding.
-
-## Build command
+## Local build
 
 Requires JDK 17 or later:
 
-    javac -d out src/main/java/com/alumni/*.java
-    java -cp out com.alumni.Main
+```bash
+javac -d out $(find src/main/java -name "*.java")
+java -cp out com.alumni.Main
+```
 
-## Next steps
+Windows PowerShell:
 
-1. Compile and run the project locally.
-2. Test alumni registration, student registration, sorted listing, search, and invalid input.
-3. Capture genuine screenshots of the running application.
-4. Add automated tests and strengthen input validation.
-5. Plan Units 3 and 4 for Phase 2, then Unit 5 and integration for the final phase.
+```powershell
+$files = Get-ChildItem -Recurse src/main/java -Filter *.java | ForEach-Object { $_.FullName }
+javac -d out $files
+java -cp out com.alumni.Main
+```
+
+## Verification status
+
+Compilation, manual workflow checks and automated tests still need to be run locally. No test result or screenshot should be claimed until captured from an actual run.
+
+## Next development checkpoints
+
+1. Compile and manually verify profile CRUD, search, validation, and file persistence.
+2. Add focused automated tests for the model, repository and service behaviour.
+3. Expand Module 3 handling for malformed records and meaningful exception messages.
+4. Evaluate Module 4 I/O/concurrency/socket concepts only where they serve a real requirement.
+5. Complete the GUI, generics/collections coverage, integration and evidence for the final phase.
