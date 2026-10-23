@@ -15,12 +15,8 @@ public final class Student extends User {
             throw new IllegalArgumentException("Current semester cannot be empty.");
         }
         String semester = value.trim();
-        if (!semester.matches("\\d{1,2}")) {
-            throw new IllegalArgumentException("Current semester must be a number from 1 to 8.");
-        }
-        int number = Integer.parseInt(semester);
-        if (number < 1 || number > 8) {
-            throw new IllegalArgumentException("Current semester must be between 1 and 8.");
+        if (!semester.matches("(?i)(?:semester\\s*)?[1-8]")) {
+            throw new IllegalArgumentException("Current semester must be from 1 to 8 (for example, 3 or Semester 3).");
         }
         return semester;
     }
