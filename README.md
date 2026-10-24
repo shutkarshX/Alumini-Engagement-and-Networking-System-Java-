@@ -2,7 +2,13 @@
 
 A Java application for managing alumni and student profiles, with a Swing desktop interface, local file persistence, and a read-only TCP directory service.
 
-## Features
+## Original vision
+
+The project began with a broader PBL vision: make alumni information easier to organize and help an institution connect alumni with current students and faculty. The proposed platform included a centralized alumni directory, searching by details such as batch, branch, or company, and possible support for events, mentorship, and job referrals.
+
+The current application implements the foundational directory and profile-management part of that vision. Events, mentorship/referral workflows, admin authentication, and institutional integration remain future work rather than completed features. See [Development Milestones](docs/DEVELOPMENT.md) for the vision-to-implementation history.
+
+## Current features
 
 - Register alumni and student profiles.
 - Validate profile details such as email, graduation year, and student semester.
@@ -63,9 +69,7 @@ The project evolved in three software increments:
 2. **Phase 2 — Persistence and TCP:** file save/load and a read-only network directory service.
 3. **Final integration — Desktop GUI:** Swing interface and integrated storage workflows.
 
-See [Development Milestones](docs/DEVELOPMENT.md) for the technical changelog and the features associated with each stage.
-
-This is an educational prototype. It does not include authentication, encrypted network communication, a database, profile editing/deletion, or institutional platform integration.
+See [Development Milestones](docs/DEVELOPMENT.md) for the original vision, phase-by-phase implementation, and current limitations.
 
 ## Tech stack
 
