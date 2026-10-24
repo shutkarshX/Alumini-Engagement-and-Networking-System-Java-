@@ -1,78 +1,124 @@
 # Alumni Engagement and Networking System (Java)
 
-A Java project for Object-Oriented Techniques using Java (OOTS), developed incrementally according to the five-module phase plan.
+A Java desktop application developed for **Object Oriented Techniques using Java (OOTS)**. The project grew in stages from a console-based profile directory into a desktop GUI with local persistence and a read-only TCP directory service.
 
-## Project context
+## Project details
+
 - **Course:** Object Oriented Techniques using Java
 - **Course code:** CCSE0355
 - **Approved topic:** Alumni Engagement and Networking System
 - **Domain:** Intelligent Java-Based Educational Management System
-- **Final application target:** Desktop GUI
-- **Current development stage:** Phase 2 console application with local profile persistence and a read-only TCP directory service
+- **Language:** Java (JDK 17)
+- **Interface:** Java Swing desktop GUI and console interface
+- **Storage:** Local file at `data/profiles.csv`
+- **Network feature:** Read-only TCP commands for listing and searching profiles
 
-## Development phases
-| Stage | Modules | Goal |
-|---|---|---|
-| Phase 1 — Report 1 | Modules 1 and 2 | Java fundamentals, classes/objects, encapsulation, abstraction, inheritance, polymorphism and relevant Unit 2 concepts |
-| Phase 2 — Report 2 | Modules 3 and 4 | Packages, exception handling, string handling, I/O streams, concurrency and relevant socket concepts |
-| Final phase — Final Report | Module 5 and integration | GUI, generics, collections, integrated testing and final evidence |
+## What it does
 
-Each phase extends the previous working version. The project is not completed in advance and then retrospectively divided into phases.
-
-## Console features
 - Register alumni and student profiles.
-- List profiles alphabetically and search by partial name.
-- Reject blank required inputs and handle nonnumeric menu input.
-- Load saved profiles at startup from `data/profiles.csv`.
-- Save the profile directory after registering a profile.
-- Use UTF-8 file I/O and report load/save errors.
-- Run a read-only TCP directory server supporting `LIST` and `SEARCH <name>` from multiple client connections.
-- Use a command-line TCP client to query the directory.
+- Validate profile details, including email format, graduation year and student semester.
+- View profiles in alphabetical order and search by partial name.
+- Save profiles locally and reload them after restarting the application.
+- Preserve punctuation and Unicode characters in stored fields.
+- Provide a Swing desktop interface with live search, **Clear**, **Show all**, and a registration dialog.
+- Run a read-only TCP directory service that accepts `LIST` and `SEARCH <name>` requests from clients.
+- Run dependency-free smoke tests for profile validation, file storage and TCP directory requests.
 
-The data file uses Base64-encoded fields so commas and punctuation in profile text are preserved. The local data file is ignored by Git; do not commit real profile information.
+This is an educational prototype. It does not currently provide authentication, encrypted network communication, a database, profile editing/deletion, or integration with an institutional alumni platform.
 
-## Source structure
+## Screenshots and report
+
+The consolidated OOTS final report is available in the repository:
+
+- [Final report (PDF)](docs/OOTS_Final_Report.pdf)
+- [Final report (Word)](docs/OOTS_Final_Report.docx)
+
+Screenshots in the report are intended to document observed application behaviour; they should not be treated as evidence of features that are not listed as implemented above.
+
+## Source layout
+
 ```text
-src/main/java/com/alumni/
-├── Main.java
-├── User.java
-├── Alumni.java
-├── Student.java
-├── ProfileDirectory.java
-├── ProfileStorage.java
-├── DirectoryServer.java
-└── DirectoryClient.java
+src/
+├── main/java/com/alumni/
+│   ├── Main.java
+│   ├── DesktopApp.java
+│   ├── User.java
+│   ├── Alumni.java
+│   ├── Student.java
+│   ├── ProfileDirectory.java
+│   ├── ProfileStorage.java
+│   ├── DirectoryServer.java
+│   └── DirectoryClient.java
+└── test/java/com/alumni/
+    ├── ProfileValidationSmokeTest.java
+    ├── ProfileStorageSmokeTest.java
+    └── DirectoryServerSmokeTest.java
 docs/
 ├── PHASE_1.md
-└── PHASE_2.md
+├── PHASE_2.md
+├── OOTS_Final_Report.pdf
+└── OOTS_Final_Report.docx
 ```
 
-## Compile and run
-Requires JDK 17 or later:
-```bash
-javac -d out src/main/java/com/alumni/*.java
-java -cp out com.alumni.Main
-```
+## Requirements
 
-To run the TCP directory service, use two terminals:
+- JDK 17 or later
+- A desktop environment for the Swing GUI
 
-```bash
-java -cp out com.alumni.DirectoryServer
-java -cp out com.alumni.DirectoryClient
-```
+## Compile and launch
 
-The server defaults to port `5050`; the client accepts optional host and port arguments.
-Windows PowerShell:
+Run these commands from the repository root.
+
+**Windows PowerShell:**
+
 ```powershell
 $files = Get-ChildItem -Recurse src/main/java -Filter *.java | ForEach-Object { $_.FullName }
 javac -d out $files
+java -cp out com.alumni.DesktopApp
+```
+
+To use the console interface instead:
+
+```powershell
 java -cp out com.alumni.Main
 ```
 
-The program creates the `data` directory and profile file when the first profile is saved. If no saved file exists, it starts with an empty directory.
+The application creates the `data` directory and profile file when a profile is first saved. If no saved file exists, the profile directory starts empty. The local profile data file is excluded from Git; do not commit real personal information.
 
-## Verification status
-The repository includes a GitHub Actions workflow (`.github/workflows/java-verification.yml`) that compiles the application and runs the dependency-free profile-storage smoke tests on pushes to `main` and pull requests. A committed workflow or test file is not itself proof of a passing run; check the Actions tab for the actual result. GitHub Actions compiles the application and runs smoke tests for file persistence and TCP `LIST`/`SEARCH` commands. Check the Actions result for the specific commit. The TCP service is a read-only learning prototype; authentication, encryption and GUI features are not implemented.
+## Run the TCP directory service
 
-## Evidence integrity
-Reports must distinguish implemented, tested features from future plans. Screenshots must be captured from the real running application.
+Compile the source first, then open two terminals from the repository root.
+
+Terminal 1:
+
+```powershell
+java -cp out com.alumni.DirectoryServer
+```
+
+Terminal 2:
+
+```powershell
+java -cp out com.alumni.DirectoryClient
+```
+
+The server defaults to port `5050`. The client supports `LIST`, `SEARCH <name>`, and `EXIT`. The service is read-only and intended for learning and demonstration, not production use.
+
+## Tests and continuous integration
+
+The GitHub Actions workflow compiles the application and smoke tests using JDK 17, then runs:
+
+- `ProfileValidationSmokeTest`
+- `ProfileStorageSmokeTest`
+- `DirectoryServerSmokeTest`
+
+See the [Actions tab](https://github.com/shutkarshX/Alumini-Engagement-and-Networking-System-Java-/actions) for the result associated with a specific commit. A workflow file being present is not, by itself, proof that every future run passes.
+
+## Development notes
+
+The work was developed incrementally:
+
+- **Phase 1:** Java fundamentals, classes and objects, inheritance, polymorphism, registration, listing and search.
+- **Phase 2:** file persistence, input/data error handling, and TCP LIST/SEARCH commands.
+- **Final integration:** Swing GUI, saved-profile reload, and integrated verification.
+
+See [Phase 1 notes](docs/PHASE_1.md) and [Phase 2 notes](docs/PHASE_2.md) for the scope and recorded checks of the earlier increments.
