@@ -13,6 +13,16 @@ A Java application for managing alumni and student profiles, with a Swing deskto
 - Run a TCP directory service with `LIST` and `SEARCH <name>` commands.
 - Run automated smoke tests for validation, storage, and TCP requests.
 
+## Development milestones
+
+The project evolved in three software increments:
+
+1. **Phase 1 — Core Java and OOP:** profile types, registration, listing, and search.
+2. **Phase 2 — Persistence and TCP:** file save/load and a read-only network directory service.
+3. **Final integration — Desktop GUI:** Swing interface and integrated storage workflows.
+
+See [Development Milestones](docs/DEVELOPMENT.md) for the technical changelog and the features associated with each stage.
+
 This is an educational prototype. It does not include authentication, encrypted network communication, a database, profile editing/deletion, or institutional platform integration.
 
 ## Tech stack
@@ -41,6 +51,8 @@ src/
     ├── ProfileValidationSmokeTest.java
     ├── ProfileStorageSmokeTest.java
     └── DirectoryServerSmokeTest.java
+docs/
+└── DEVELOPMENT.md
 .github/
 └── workflows/
     └── java-verification.yml
