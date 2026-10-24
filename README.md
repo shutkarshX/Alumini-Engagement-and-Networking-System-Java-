@@ -2,11 +2,11 @@
 
 A Java application for managing alumni and student profiles, with a Swing desktop interface, local file persistence, and a read-only TCP directory service.
 
-## Original vision
+## Project goal and scope
 
-The project began with a broader PBL vision: make alumni information easier to organize and help an institution connect alumni with current students and faculty. The proposed platform included a centralized alumni directory, searching by details such as batch, branch, or company, and possible support for events, mentorship, and job referrals.
+The goal of the project is to make alumni information easier to organize and provide a foundation for connections between alumni and current students. The initial PBL proposal described a broader platform with a centralized directory, searching by details such as batch, branch, or company, and networking possibilities such as events, mentorship, and job referrals.
 
-The current application implements the foundational directory and profile-management part of that vision. Events, mentorship/referral workflows, admin authentication, and institutional integration remain future work rather than completed features. See [Development Milestones](docs/DEVELOPMENT.md) for the vision-to-implementation history.
+This repository focuses on the working foundation: profile management, validation, searchable directory features, local persistence, and a TCP-based read-only directory service, integrated through a Java Swing interface. Event management, mentorship/referral workflows, admin authentication, and institutional integration are not part of the current implementation and can be considered future extensions. See [Development Milestones](docs/DEVELOPMENT.md) for the development history.
 
 ## Current features
 
@@ -63,7 +63,7 @@ These commands are for Windows PowerShell and should be run from the repository 
 
 ## Development milestones
 
-The project evolved in three software increments:
+Implementation was developed in three software increments:
 
 1. **Phase 1 — Core Java and OOP:** profile types, registration, listing, and search.
 2. **Phase 2 — Persistence and TCP:** file save/load and a read-only network directory service.
