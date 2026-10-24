@@ -56,6 +56,7 @@ src/
 docs/
 ├── PHASE_1.md
 ├── PHASE_2.md
+├── FINAL_INTEGRATION.md
 ├── OOTS_Final_Report.pdf
 └── OOTS_Final_Report.docx
 ```
