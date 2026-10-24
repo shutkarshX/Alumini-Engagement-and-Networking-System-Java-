@@ -13,6 +13,48 @@ A Java application for managing alumni and student profiles, with a Swing deskto
 - Run a TCP directory service with `LIST` and `SEARCH <name>` commands.
 - Run automated smoke tests for validation, storage, and TCP requests.
 
+## Quick start (Windows)
+
+You need **Git** and **JDK 17 or later** installed. The desktop interface requires a graphical desktop environment.
+
+1. Open PowerShell.
+2. Clone the repository and enter its folder:
+
+```powershell
+git clone https://github.com/shutkarshX/Alumini-Engagement-and-Networking-System-Java-.git
+cd Alumini-Engagement-and-Networking-System-Java-
+```
+
+3. Check that Java and the Java compiler are available:
+
+```powershell
+java -version
+javac -version
+```
+
+Both commands should report version 17 or later. If either command is not recognized, install a JDK (not just a JRE), configure your PATH, and reopen PowerShell.
+
+4. Compile the application:
+
+```powershell
+$files = Get-ChildItem -Recurse src/main/java -Filter *.java | ForEach-Object { $_.FullName }
+javac -d out $files
+```
+
+5. Launch the desktop application:
+
+```powershell
+java -cp out com.alumni.DesktopApp
+```
+
+To run the console interface instead, use:
+
+```powershell
+java -cp out com.alumni.Main
+```
+
+These commands are for Windows PowerShell and should be run from the repository root. On Linux or macOS, install JDK 17+, clone the repository, and use your shell's equivalent source-file listing and classpath commands.
+
 ## Development milestones
 
 The project evolved in three software increments:
@@ -63,24 +105,6 @@ docs/
 - JDK 17 or later
 - A desktop environment to run the Swing GUI
 
-## Compile and run
-
-Run from the repository root in Windows PowerShell:
-
-```powershell
-$files = Get-ChildItem -Recurse src/main/java -Filter *.java | ForEach-Object { $_.FullName }
-javac -d out $files
-java -cp out com.alumni.DesktopApp
-```
-
-To launch the console interface instead:
-
-```powershell
-java -cp out com.alumni.Main
-```
-
-The application creates `data/profiles.csv` when a profile is first saved. Local profile data is excluded from Git; do not commit real personal information.
-
 ## TCP directory service
 
 After compiling the source, open two terminals from the repository root.
@@ -108,3 +132,7 @@ GitHub Actions compiles the application and smoke tests with JDK 17, then runs:
 - `DirectoryServerSmokeTest`
 
 Check the [Actions tab](https://github.com/shutkarshX/Alumini-Engagement-and-Networking-System-Java-/actions) for the result associated with a particular commit.
+
+## Local data
+
+The application creates `data/profiles.csv` when a profile is first saved. Local profile data is excluded from Git; do not commit real personal information.
