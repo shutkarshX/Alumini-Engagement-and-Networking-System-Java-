@@ -11,7 +11,10 @@ This file tracks evidence needed to support the Phase 1 report. Check an item on
   - Workflow run: https://github.com/shutkarshX/Alumini-Engagement-and-Networking-System-Java-/actions/runs/40952016763
   - Commit: `5997519ee9ad3a04d63b03ef2d37a1552d28f85e`
   - This run compiles the Java application and smoke tests, then runs profile-validation, storage, and TCP directory smoke tests.
-- [ ] Capture a fresh screenshot of the Actions run showing the successful conclusion for the commit used in the final submission, if screenshots are required.
+- [x] GitHub Actions run for the evidence-checklist commit completed successfully.
+  - Workflow run: https://github.com/shutkarshX/Alumini-Engagement-and-Networking-System-Java-/actions/runs/40952896755
+  - Commit: `3f491d7adb90029cf380376c334adec01c88b065`
+- [ ] Capture a screenshot of the successful Actions run for the final report, if screenshots are required.
 
 ## Local application evidence — collect on the student's own machine
 
